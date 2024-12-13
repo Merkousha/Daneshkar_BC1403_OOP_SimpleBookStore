@@ -23,6 +23,12 @@ namespace BookStore
                 Console.Clear();
 
                 var selectedMenu = int.Parse(input);
+                //ساخت لیست کتاب
+                List<Book> Books = new List<Book>();
+                List<Category> Categories = new List<Category>();
+                SearchBook.InitCategoryData(Categories);
+                SearchBook.InitBookData(Books, Categories);
+
 
                 switch (selectedMenu)
                 {
@@ -36,11 +42,20 @@ namespace BookStore
                             Category Category1 = new Category("Programming");
                             Category Category2 = new Category("AI");
                             Category Category3 = new Category("roman");
+
+                            //اضافه کردن دسته بندی به لیست
+                            Categories.Add(Category1);
+                            Categories.Add(Category2);
+                            Categories.Add(Category3);
+
                             // ایجاد کتاب‌ها
 
                             Book book1 = new Book("C# Programming", "John Doe", 29.99m, Category1);
                             Book book2 = new Book("Learning ASP.NET", "Jane Smith", 39.99m, Category2);
 
+                            //اضافه کردن کتاب به لیست
+                            Books.Add(book1);
+                            Books.Add(book2);
                             Console.WriteLine(book1);
                             Console.WriteLine(book2);
 
@@ -64,9 +79,15 @@ namespace BookStore
                         }
                     case 2:
                         {
-                            SearchBook searchbook = new SearchBook();
-                            searchbook.Search();
+                            SearchBook searchbook = new SearchBook(Books);
+                            bool FindStatus;
+                            foreach (var item in searchbook.Search( out FindStatus))
+                            {
+                                Console.WriteLine(item);
+                            }
 
+                            if (!FindStatus)
+                                SearchBook.SendMesaage("Not Found" ,ConsoleColor.Red);
                             break;
                            }
                 }
